@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Internet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+        body{background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);color:#fff}
+        header{display:flex;justify-content:space-between;align-items:center;padding:20px 8%;background:rgba(0,0,0,.4);backdrop-filter:blur(10px);position:sticky;top:0}
+        header h1{font-size:24px;font-weight:700}
+        nav a{color:#fff;text-decoration:none;margin-left:20px;font-weight:500;transition:.3s}
+        nav a:hover{color:#00e0ff}
+        .hero{text-align:center;padding:80px 10%}
+        .hero h2{font-size:40px;margin-bottom:20px}
+        .hero p{font-size:18px;opacity:.85;margin-bottom:30px}
+        .hero button{padding:12px 30px;border:none;border-radius:30px;background:#00e0ff;color:#000;font-weight:600;cursor:pointer}
+        .section-title{text-align:center;margin:60px 0 30px;font-size:28px}
+        .plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:25px;padding:0 8% 60px}
+        .card{background:rgba(255,255,255,.08);padding:25px;border-radius:20px;backdrop-filter:blur(15px);box-shadow:0 8px 20px rgba(0,0,0,.4);transition:.3s}
+        .card:hover{transform:translateY(-8px)}
+        .card h3{margin-bottom:10px}
+        .price{font-size:22px;font-weight:700;margin-bottom:10px}
+        .card button{width:100%;padding:10px;border:none;border-radius:25px;background:#00e0ff;font-weight:600;cursor:pointer}
+        footer{text-align:center;padding:20px;background:rgba(0,0,0,.5);font-size:14px;opacity:.7}
+        #paymentModal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);justify-content:center;align-items:center;z-index:1000}
+        .modal-box{background:#1e2a38;padding:30px;border-radius:20px;width:90%;max-width:400px;box-shadow:0 10px 30px rgba(0,0,0,.6)}
+        .modal-box input,.modal-box select{width:100%;padding:10px;border-radius:10px;border:none;margin-bottom:15px}
+        .modal-box button{width:100%;padding:12px;border:none;border-radius:25px;background:#00e0ff;font-weight:600;cursor:pointer;margin-bottom:10px}
+        .cancel-btn{background:#444!important;color:#fff}
+        .success{color:#00ffae;font-size:14px;margin-top:10px;text-align:center}
+        .error{color:#ff6b6b;font-size:14px;margin-top:10px;text-align:center}
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Space Internet</h1>
+    <nav>
+        <a href="#">Home</a>
+        <a href="#plans">Plans</a>
+        <a href="#contact">Contact</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <h2>Affordable Internet Bundles</h2>
+    <p>Select a bundle plan and pay instantly via M-Pesa or Airtel Money.</p>
+    <button onclick="document.getElementById('plans').scrollIntoView({behavior:'smooth'})">View Plans</button>
+</section>
+
+<h2 class="section-title" id="plans">Available Plans</h2>
+<div class="plans">
+    <div class="card">
+        <h3>1 Hour</h3>
+        <div class="price" data-amount="10">KES 10</div>
+        <button onclick="openModal('1 Hour',10)">Buy Now</button>
+    </div>
+    <div class="card">
+        <h3>1 Day</h3>
+        <div class="price" data-amount="50">KES 50</div>
+        <button onclick="openModal('1 Day',50)">Buy Now</button>
+    </div>
+    <div class="card">
+        <h3>7 Days</h3>
+        <div class="price" data-amount="300">KES 300</div>
+        <button onclick="openModal('7 Days',300)">Buy Now</button>
+    </div>
+    <div class="card">
+        <h3>30 Days</h3>
+        <div class="price" data-amount="1000">KES 1000</div>
+        <button onclick="openModal('30 Days',1000)">Buy Now</button>
+    </div>
+</div>
+
+<footer id="contact">
+    © 2026 Space Internet. All rights reserved.<br>
+    Email: musyanoel86@gmail.com | musyanoel85@gmail.com
+</footer>
+
+<div id="paymentModal">
+    <div class="modal-box">
+        <h3 id="modalTitle"></h3>
+        <input type="text" id="bundlePhone" placeholder="Phone to receive bundle (2547XXXXXXXX)">
+        <select id="paymentMethod">
+            <option value="Mpesa">Mpesa</option>
+            <option value="AirtelMoney">AirtelMoney</option>
+        </select>
+        <input type="text" id="paymentPhone" placeholder="Payment phone (2547XXXXXXXX)">
+        <button onclick="submitPayment()">Pay Now</button>
+        <button class="cancel-btn" onclick="closeModal()">Cancel</button>
+        <div id="responseMsg"></div>
+    </div>
+</div>
+
+<script>
+let selectedPlan = '';
+let selectedAmount = 0;
+
+function openModal(plan, amount){
+    selectedPlan = plan;
+    selectedAmount = amount;
+    document.getElementById('modalTitle').innerText = plan + " - KES " + amount;
+    document.getElementById('paymentModal').style.display='flex';
+}
+
+function closeModal(){
+    document.getElementById('paymentModal').style.display='none';
+    document.getElementById('responseMsg').innerHTML='';
+}
+
+async function submitPayment(){
+    const bundlePhone = document.getElementById('bundlePhone').value.trim();
+    const paymentMethod = document.getElementById('paymentMethod').value;
+    const paymentPhone = document.getElementById('paymentPhone').value.trim();
+
+    if(!bundlePhone || !paymentPhone){
+        document.getElementById('responseMsg').innerHTML='<div class="error">All fields required.</div>';
+        return;
+    }
+
+    const res = await fetch('/pay_bundle',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+            bundle_plan:selectedPlan,
+            amount:selectedAmount,
+            bundle_phone:bundlePhone,
+            payment_method:paymentMethod,
+            payment_phone:paymentPhone
+        })
+    });
+
+    const data = await res.json();
+
+    if(data.status==='success'){
+        document.getElementById('responseMsg').innerHTML='<div class="success">STK Push sent. Check your phone.</div>';
+    }else{
+        document.getElementById('responseMsg').innerHTML='<div class="error">Payment failed.</div>';
+    }
+}
+</script>
+
+</body>
+</html>
