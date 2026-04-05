@@ -36,7 +36,19 @@
 <body>
 
 <header>
-    <h1>Space Internet</h1>
+    <div style="display:flex; align-items:center; gap:12px;">
+        <img src="{{ url_for('static', filename='logo.png') }}" 
+             alt="Space Internet Logo" 
+             style="height:50px;">
+        <h1>Space Internet</h1>
+    </div>
+
+    <nav>
+        <a href="#">Home</a>
+        <a href="#plans">Plans</a>
+        <a href="#contact">Contact</a>
+    </nav>
+</header>
     <nav>
         <a href="#">Home</a>
         <a href="#plans">Plans</a>
