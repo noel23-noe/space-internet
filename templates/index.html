@@ -35,19 +35,21 @@
 </head>
 <body>
 
-<header>
-    <div style="display:flex; align-items:center; gap:12px;">
+<header style="display:flex; justify-content:space-between; align-items:center; padding:20px 8%; background: rgba(0,0,0,0.4); backdrop-filter: blur(10px); position: sticky; top: 0;">
+    
+    <div style="display:flex; align-items:center; gap:15px;">
         <img src="{{ url_for('static', filename='logo.png') }}" 
              alt="Space Internet Logo" 
-             style="height:50px;">
-        <h1>Space Internet</h1>
+             style="height:55px; width:auto;">
+        <h1 style="font-size:24px; font-weight:700; margin:0;">Space Internet</h1>
     </div>
 
     <nav>
-        <a href="#">Home</a>
-        <a href="#plans">Plans</a>
-        <a href="#contact">Contact</a>
+        <a href="#" style="color:#fff; text-decoration:none; margin-left:20px;">Home</a>
+        <a href="#plans" style="color:#fff; text-decoration:none; margin-left:20px;">Plans</a>
+        <a href="#contact" style="color:#fff; text-decoration:none; margin-left:20px;">Contact</a>
     </nav>
+
 </header>
     <nav>
         <a href="#">Home</a>
